@@ -5,6 +5,7 @@ import Post from './Post';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Input,  } from '@material-ui/core';
+import ImageUpload from './ImageUpload';
 
 function getModalStyle() {
   const top = 50;
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function App() {
+
   const classes = useStyles();
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
@@ -174,29 +176,36 @@ function App() {
         </div>
       </Modal>
 
+
       {/* Header */}
       <div className="app__header">
         <img
           className="app__headerImage"
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
         />
+        {/* SignIn, SignUp and LogOut functionality */}
+        { user ? (
+          <Button onClick={() => {auth.signOut()}}>Logout</Button>
+        ) : (
+          <div className="app__loginContainer">
+            <Button onClick={() => {setOpenSignIn(true)}}>SignIn</Button>
+            <Button onClick={() => {setOpen(true)}}>SignUp</Button>
+          </div>
+        )}
       </div> 
 
-      {/* SignIn, SignUp and LogOut functionality */}
-      { user ? (
-        <Button onClick={() => {auth.signOut()}}>Logout</Button>
-      ) : (
-        <div className="app__loginContainer">
-          <Button onClick={() => {setOpenSignIn(true)}}>SignIn</Button>
-          <Button onClick={() => {setOpen(true)}}>SignUp</Button>
-        </div>
-      )}
 
       {
         posts.map(({id, post}) => (
           <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
         ))
       }
+      
+      {user?.displayName ? (
+        <ImageUpload username={user.displayName} />
+      ) : (
+        <h3>Sorry you need to login to update a post</h3>
+      )}
 
     </div>
   );
