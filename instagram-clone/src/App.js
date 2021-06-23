@@ -194,12 +194,14 @@ function App() {
         )}
       </div> 
 
+      <div className="app__posts">
+        {
+          posts.map(({id, post}) => (
+            <Post key={id} postId={id} user={user} username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
+          ))
+        }
+      </div>
 
-      {
-        posts.map(({id, post}) => (
-          <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
-        ))
-      }
       
       {user?.displayName ? (
         <ImageUpload username={user.displayName} />
